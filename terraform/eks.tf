@@ -17,15 +17,15 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.eks_cluster_role.name
 }
-
 resource "aws_eks_cluster" "eks" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   vpc_config {
-    subnet_ids = [aws_subnet.eks_subnet_1.id, aws_subnet.eks_subnet_2.id]
+    subnet_ids = var.subnet_ids
   }
 }
+
 data "aws_vpc" "existing" {
   id = var.vpc_id
 }
@@ -37,11 +37,3 @@ data "aws_subnets" "existing" {
   }
 }
 
-resource "aws_eks_cluster" "eks" {
-  name     = var.cluster_name
-  role_arn = aws_iam_role.eks_cluster_role.arn
-
-  vpc_config {
-    subnet_ids = var.subnet_ids
-  }
-}
