@@ -26,3 +26,22 @@ resource "aws_eks_cluster" "eks" {
     subnet_ids = [aws_subnet.eks_subnet_1.id, aws_subnet.eks_subnet_2.id]
   }
 }
+data "aws_vpc" "existing" {
+  id = var.vpc_id
+}
+
+data "aws_subnets" "existing" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+}
+
+resource "aws_eks_cluster" "eks" {
+  name     = var.cluster_name
+  role_arn = aws_iam_role.eks_cluster_role.arn
+
+  vpc_config {
+    subnet_ids = var.subnet_ids
+  }
+}

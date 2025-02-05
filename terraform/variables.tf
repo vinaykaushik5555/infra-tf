@@ -17,3 +17,13 @@ variable "min_size" {
 variable "max_size" {
   default = 2
 }
+variable "vpc_id" {
+  description = "VPC ID where EKS will be deployed"
+  default     = ""
+}
+
+variable "subnet_ids" {
+  description = "List of subnet IDs for EKS"
+  type        = list(string)
+  default     = []
+}
